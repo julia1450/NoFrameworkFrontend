@@ -43,6 +43,11 @@ export default () => {
         checkRoutes()
     }
 
+    // 프로그래밍 방식으로 탐색하기 위한 메서드를 추가한다(route_using_attr 을 위한 메서드)
+    router.navigate = fragment => {
+        window.location.hash = fragment
+    }
+
     // router를 return 한다.
     return router
 }
