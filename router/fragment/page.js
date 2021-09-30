@@ -10,13 +10,30 @@ export default container => {
         container.textContent = 'This is List Page'
     }
 
+    const dummy = () => {
+        container.textContent = 'This is Dummy Page'
+    }
+
     const notFound = () => {
         container.textContent = 'Page Not Found!'
+    }
+
+    const detail = (params) => {
+        const {id} = params
+        container.textContent = `This is Detail Page with ID ${id}`
+    }
+
+    const anotherDetail = (params) => {
+        const {id, anotherId} = params
+        container.textContent = `This is Another Detail Page with ID ${id} and AnotherId ${anotherId}`
     }
 
     return {
         home,
         list,
-        notFound
+        dummy,
+        notFound,
+        detail,
+        anotherDetail
     }
 }

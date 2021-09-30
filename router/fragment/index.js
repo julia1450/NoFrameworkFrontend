@@ -10,7 +10,9 @@ const router = createRouter()
 router
     .addRoutes('#/', pages.home)
     .addRoutes('#/list', pages.list)
-    .addRoutes('#/dummy', pages.list)
+    .addRoutes('#/list/:id', pages.detail)
+    .addRoutes('#/list/:id/:anotherId', pages.anotherDetail)
+    .addRoutes('#/dummy', pages.dummy)
     .setNotFound(pages.notFound)
     .start()
 

@@ -21,9 +21,25 @@ export default () => {
         currentRoute.func()
     }
 
+    const ROUTE_PARAMETER_REGEXP = /:(\w+)/g
+    const URL_FRAGMENT_REGEXP = '([^\\/]+)'
     // 라우터에 경로, 실행할 함수를 추가한다
+    // 프래그먼트에서 정규식을 사용해 매개변수명을 추출한다.
+    // router에 push 할 때 testRegExp 변수에 실제 URL과 매칭하기 위한 정규식을 넘긴다
     router.addRoutes = (fragment, func) => {
-        routes.push({fragment, func})
+        const params = []
+        
+        const parsedFragment = fragment.replace(ROUTE_PARAMETER_REGEXP, (match, paramName) => { // match는 매치된 문자열
+            params.push(paramName)
+            return URL_FRAGMENT_REGEXP
+        }).replace(/\//g, '\\/')
+
+        routes.push({
+            testRegExp: new RegExp(`^${parsedFragment}$`),
+            fragment, 
+            func,
+            params
+        })
         return router
     }
 
