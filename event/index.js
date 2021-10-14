@@ -17,10 +17,28 @@ const state = {
   currentFilter: 'All'
 }
 
+const events = {
+  deleteItem: (index) => {
+    state.todos.splice(index, 1)
+    render()
+  },
+  addItem: (text) => {
+    state.todos.push({
+      text,
+      completed: false
+    })
+    render()
+  },
+  toggleItem: (index) => {
+    state.todos[index].completed = !state.todos[index].completed
+    render()
+  }
+}
+
 const render = () => {
   window.requestAnimationFrame(() => {
     const main = document.querySelector('#root')
-    const newMain = registry.renderRoot(main, state)
+    const newMain = registry.renderRoot(main, state, events)
     applyDiff(document.body, main, newMain)
   })
 }

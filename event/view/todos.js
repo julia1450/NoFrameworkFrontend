@@ -8,7 +8,7 @@ const createNewTodoNode = () => {
   return template.content.firstElementChild.cloneNode(true)
 }
 
-const getTodoElement = todo => {
+const getTodoElement = (todo, index, events) => {
     const {
       text,
       completed
@@ -23,6 +23,9 @@ const getTodoElement = todo => {
       element.classList.add('completed')
       element.querySelector('input.toggle').checked = true
     }
+
+    element.querySelector('input.toggle').dataset.index = index
+    element.querySelector('button.destroy').dataset.index = index
 
     return element
   
@@ -41,17 +44,29 @@ const getTodoElement = todo => {
     //       <input class="edit" value="${text}">
     //     </li>`
   }
+
   
-  export default (targetElement, { todos }) => {
+
+  export default (targetElement, { todos }, events) => {
     const newTodoList = targetElement.cloneNode(true)
 
     newTodoList.innerHTML = ''
 
     todos
-      .map(getTodoElement)
+      .map((todo, index) => getTodoElement(todo, index, events))
       .forEach(element => {
         newTodoList.appendChild(element)
       })
+
+    // 이벤트 위임을 통해 각 todoItem이 아닌 부모 요소에서 캐치한다
+    newTodoList.addEventListener('click', e => {
+      if(e.target.matches('button.destroy')) {
+        events.deleteItem(e.target.dataset.index)
+      }
+      else if(e.target.matches('input.toggle')) {
+        events.toggleItem(e.target.dataset.index)
+      }
+    })
       
     return newTodoList
   }
